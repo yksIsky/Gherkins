@@ -9,6 +9,10 @@ from selenium.webdriver.support import expected_conditions as EC
 def step_given_user_pass(context):
     context.username = "user1"
     context.password = "pass123"
+    # Inicjalizacja drivera
+    context.driver = webdriver.Chrome()
+    context.wait = WebDriverWait(context.driver, 10)
+
 
 @when("I log in")
 def step_when_login(context):
@@ -17,21 +21,26 @@ def step_when_login(context):
     else:
         context.message = "Login failed"
 
+
 @then('I should see "Welcome user1"')
 def step_then_see_message(context):
     assert context.message == "Welcome user1"
-    driver = webdriver.Chrome()
-    wait = WebDriverWait(driver, 10)
+    driver = context.driver
+    wait = context.wait
+
     driver.get("https://demoqa.com/")
-    x = driver.find_element(By.XPATH,"//div[@class='card-body']/h5[1]")
 
-    x.click()
-    driver.find_element(By.XPATH,"//*[@id='item-0']/span").click()
-    wait.until(EC.presence_of_element_located((By.XPATH, "//*[@id='userName-label']")))
+    # Poczekaj aż będzie klikalny i kliknij przez JS (ze względu na reklamy)
+    element = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@class='card-body']/h5[1]")))
+    driver.execute_script("arguments[0].click();", element)
 
-    print(driver.find_element(By.XPATH,"//*[@id='userName-label']").text)
-    assert driver.find_element(By.XPATH,"//*[@id='userName-label']").text == "Full Name"
-    assert 1 == 1
-    #assert driver.find_element(By.XPATH,"//*[@id='userName-label']").get_attribute("href") == "Full Name"
-    #wait.until(EC.presence_of_element_located((By.XPATH, "//*[@id='genterWrapper']/div[2]/div[3]")))
+    # Kliknij na "Text Box"
+    wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='item-0']/span"))).click()
 
+    # Poczekaj aż pojawi się etykieta "Full Name"
+    label = wait.until(EC.presence_of_element_located((By.XPATH, "//*[@id='userName-label']")))
+
+    print(label.text)
+    assert label.text == "Full Name"
+
+    driver.quit()

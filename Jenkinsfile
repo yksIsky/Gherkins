@@ -4,13 +4,13 @@ pipeline {
     stages {
         stage('Install dependencies') {
             steps {
-                bat 'pip install -r requirements.txt'
+                bat 'D:/Python/python.exe -m pip install -r requirements.txt'
             }
         }
 
         stage('Run Behave tests') {
             steps {
-                bat 'behave --junit --junit-directory reports'
+                bat 'D:/Python/python.exe -m behave --junit --junit-directory reports'
             }
         }
 

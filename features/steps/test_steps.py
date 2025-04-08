@@ -31,7 +31,7 @@ def step_then_see_message(context):
 
     print(driver.find_element(By.XPATH,"//*[@id='userName-label']").text)
     assert driver.find_element(By.XPATH,"//*[@id='userName-label']").text == "Full Name"
-    #assert driver.find_element(By.XPATH,"//*[@id='userName-label']").get_attribute("value") == "Full Name"
+    assert 1 == 1
     #assert driver.find_element(By.XPATH,"//*[@id='userName-label']").get_attribute("href") == "Full Name"
     #wait.until(EC.presence_of_element_located((By.XPATH, "//*[@id='genterWrapper']/div[2]/div[3]")))
 

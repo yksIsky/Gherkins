@@ -15,4 +15,4 @@ def step_when_login(context):
 @then('I should see "Welcome user1"')
 def step_then_see_message(context):
     assert context.message == "Welcome user1"
-    assert 1 == 2
+
